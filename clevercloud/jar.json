@@ -1,6 +1,6 @@
 {
   "build": {
     "type": "maven",
-    "goal": "target"
+    "goal": "clean compile package"
   }
 }
