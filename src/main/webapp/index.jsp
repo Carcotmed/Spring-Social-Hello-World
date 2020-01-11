@@ -13,8 +13,7 @@ body {
 
 	<h1>Connection to Facebook via Spring Social</h1>
 	<p>
-		<a href=<c:out value="${facebookUrl}"></c:out>
-			<!-- "/createFacebookAuthorization" -->> Get an url to connect to Facebook
+		<a href=<c:out value="${facebookUrl}"/>> <!-- "/createFacebookAuthorization" -->Get an url to connect to Facebook
 		</a>
 	</p>
 
