@@ -5,10 +5,11 @@ import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 
 // @Configuration
 public class ContainerConfiguration {
@@ -33,8 +34,8 @@ public class ContainerConfiguration {
 	}
 
 
-	@Value("${server.http.port}")
-	int port;
+	@Autowired
+	Environment environment;
 
 
 	private Connector initiateHttpConnector() {
@@ -42,10 +43,15 @@ public class ContainerConfiguration {
 		connector.setScheme("http");
 
 		//connector.setPort(8080);
-		connector.setPort(this.port);
+
+		String port = this.environment.getProperty("local.server.port");
+
+		connector.setPort(Integer.getInteger(port));
+
+		System.out.println("Port: " + port);
 
 		connector.setSecure(false);
-		//connector.setRedirectPort(8443);
+		connector.setRedirectPort(8443);
 
 		return connector;
 	}
