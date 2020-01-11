@@ -5,12 +5,12 @@ import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
+// @Configuration
 public class ContainerConfiguration {
 
 	@Bean
@@ -32,12 +32,20 @@ public class ContainerConfiguration {
 		return tomcat;
 	}
 
+
+	@Value("${server.http.port}")
+	int port;
+
+
 	private Connector initiateHttpConnector() {
 		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
 		connector.setScheme("http");
-		connector.setPort(8080);
+
+		//connector.setPort(8080);
+		connector.setPort(this.port);
+
 		connector.setSecure(false);
-		connector.setRedirectPort(8443);
+		//connector.setRedirectPort(8443);
 
 		return connector;
 	}
