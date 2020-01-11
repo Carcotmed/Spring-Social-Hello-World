@@ -5,13 +5,13 @@ import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.Configuration;
 
-// @Configuration
+@Configuration
 public class ContainerConfiguration {
 
 	@Bean
@@ -28,31 +28,24 @@ public class ContainerConfiguration {
 				context.addConstraint(securityConstraint);
 			}
 		};
-
-		tomcat.addAdditionalTomcatConnectors(this.initiateHttpConnector());
+		tomcat.addAdditionalTomcatConnectors(this.redirectConnector());
 		return tomcat;
 	}
 
 
-	@Autowired
-	Environment environment;
+	@Value("${server.port.http}") //Defined in application.properties file
+	int	httpPort;
+
+	@Value("${server.port}") //Defined in application.properties file
+	int	httpsPort;
 
 
-	private Connector initiateHttpConnector() {
-		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+	private Connector redirectConnector() {
+		Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
 		connector.setScheme("http");
-
-		//connector.setPort(8080);
-
-		String port = this.environment.getProperty("local.server.port");
-
-		connector.setPort(Integer.getInteger(port));
-
-		System.out.println("Port: " + port);
-
+		connector.setPort(this.httpPort);
 		connector.setSecure(false);
-		connector.setRedirectPort(8443);
-
+		connector.setRedirectPort(this.httpsPort);
 		return connector;
 	}
 
