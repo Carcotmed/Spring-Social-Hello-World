@@ -27,6 +27,7 @@ public class ContainerConfiguration {
 				context.addConstraint(securityConstraint);
 			}
 		};
+
 		tomcat.addAdditionalTomcatConnectors(this.initiateHttpConnector());
 		return tomcat;
 	}

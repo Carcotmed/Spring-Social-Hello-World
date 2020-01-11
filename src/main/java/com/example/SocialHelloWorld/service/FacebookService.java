@@ -38,8 +38,6 @@ public class FacebookService {
 
 		//String redirectUri = "http://localhost:8080/facebook";
 
-		System.out.println(redirectUri);
-
 		params.setRedirectUri(redirectUri);
 
 		params.setScope("public_profile, email, user_birthday, user_friends");
@@ -117,8 +115,6 @@ public class FacebookService {
 		List<User> friends;
 
 		friends = facebook.friendOperations().getFriendProfiles();
-
-		System.out.println(friends);
 
 		return friends;
 
